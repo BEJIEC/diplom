@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { ThemeProvider } from 'styled-components';
 import { Provider as StoreProvider } from 'mobx-react';
+
+import 'fontsource-roboto';
 import './index.css';
 
+import AppStore from './stores/AppStore';
+
+const stores = {
+	appStore: new AppStore()
+}
+
 ReactDOM.render(
-	<StoreProvider>
-		<ThemeProvider>
-			<React.StrictMode>
-				<App />
-			</React.StrictMode>
-		</ThemeProvider>
+	<StoreProvider {...stores}>
+		<React.StrictMode>
+			<App />
+		</React.StrictMode>
 	</StoreProvider>,
 	document.getElementById('root')
 );

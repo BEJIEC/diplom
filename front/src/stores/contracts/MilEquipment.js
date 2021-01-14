@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import { makeAutoObservable } from 'mobx';
 
 export default class MilEquipment {
@@ -7,11 +8,11 @@ export default class MilEquipment {
     quantity;
 
     constructor({ id, name, quantity } = {}) {
-        makeAutoObservable(this);
-
-        this.id = id || null;
+        this.id = id || v4();
         this.name = name || '';
         this.quantity = quantity || 0;
+
+        makeAutoObservable(this);
     }
 
     static createEmptyMilEquipment() {
