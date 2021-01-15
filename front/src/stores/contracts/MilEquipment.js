@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 
 export default class MilEquipment {
 
@@ -13,6 +13,10 @@ export default class MilEquipment {
         this.quantity = quantity || 0;
 
         makeAutoObservable(this);
+    }
+
+    toServerContract() {
+        return toJS(this);
     }
 
     static createEmptyMilEquipment() {

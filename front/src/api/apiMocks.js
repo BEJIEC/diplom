@@ -94,5 +94,35 @@ export let fromServerPrioritized = [
         id: 1,
         name: 'VITI',
         priority: 2
+    },
+    {
+        id: 2,
+        name: 'A2724',
+        priority: 1
+    },
+    {
+        id: 3,
+        name: 'VITI',
+        priority: 3
+    },
+    {
+        id: 4,
+        name: 'A2724',
+        priority: 2
+    },
+    {
+        id: 5,
+        name: 'VITI',
+        priority: 2
+    },
+    {
+        id: 6,
+        name: 'A2724',
+        priority: 0
+    },
+    {
+        id: 7,
+        name: 'VITI',
+        priority: 1
     }
 ]

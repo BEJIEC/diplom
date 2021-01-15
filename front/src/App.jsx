@@ -5,6 +5,8 @@ import { Dialog } from '@material-ui/core';
 import Map from './components/Map';
 import AppLayout from './components/AppLayout';
 import Header from './components/Header';
+import SideBarWithPriority from './components/SideBarWithPriority';
+import SideBarWithWarehouses from './components/SideBarWithWarehouses';
 
 function App({ appStore }) {
 
@@ -21,6 +23,9 @@ function App({ appStore }) {
             >
                 {appStore.dialogComponent}
             </Dialog>
+
+            <SideBarWithPriority/>
+            <SideBarWithWarehouses/>
 
         </AppLayout>
     );

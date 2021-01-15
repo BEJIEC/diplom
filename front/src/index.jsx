@@ -12,11 +12,19 @@ const stores = {
 	appStore: new AppStore()
 }
 
-ReactDOM.render(
-	<StoreProvider {...stores}>
-		<React.StrictMode>
-			<App />
-		</React.StrictMode>
-	</StoreProvider>,
-	document.getElementById('root')
-);
+async function initApp() {
+
+	await stores.appStore.getSettings();
+
+	ReactDOM.render(
+		<StoreProvider {...stores}>
+			<React.StrictMode>
+				<App />
+			</React.StrictMode>
+		</StoreProvider>,
+		document.getElementById('root')
+	);
+
+}
+
+initApp();

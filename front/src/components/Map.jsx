@@ -6,13 +6,14 @@ import { inject, observer } from 'mobx-react';
 import { Loader } from '@googlemaps/js-api-loader';
 
 import CreateChangeMapObject from './CreateChangeMapObject';
+import ObjectInfoWindow from './ObjectInfoWindow';
 
 class Map extends React.PureComponent {
 
     componentDidMount() {
         (new Loader({
             apiKey: 'AIzaSyCrlTaY8NMKpZnX95mgnxzvq2xd137Y1UM'
-        })).load().then(() => {
+        })).load().then(async () => {
 
             const { appStore } = this.props;
 
@@ -21,7 +22,7 @@ class Map extends React.PureComponent {
                     lat: 50.42,
                     lng: 30.45
                 },
-                zoom: 10
+                zoom: 12
             });
             
             appStore.googleMapsApi = window.google.maps;
@@ -32,6 +33,13 @@ class Map extends React.PureComponent {
                     latLng={{ lat:  event.latLng.lat(), lng: event.latLng.lng() }}
                 />)
             });
+
+            await appStore.getMilObjects();
+
+            appStore.drawAllMarkersForObjects(appStore.allMilBases.concat(appStore.allMilWarehouses), (thisObjectType, thisObject) => appStore.setDialogComponent(<ObjectInfoWindow
+                object={thisObject}
+                objectType={thisObjectType}
+            />))
 
         });
     }

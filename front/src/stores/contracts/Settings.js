@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx';
 export default class Settings {
 
     isWarState;
-    equipmentsBase; // [{ id, name }]
+    equipmentsBase;
 
     constructor({ isWarState = false, equipmentsBase } = {}) {
         this.isWarState = isWarState;

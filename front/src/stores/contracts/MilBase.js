@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 
 import MilEquipment from './MilEquipment';
 
@@ -65,6 +65,12 @@ export default class MilBase {
         });
 
         return computed.filter(unit => unit.quantity !== 0);
+    }
+
+    toServerContract() {
+        let serverFormat = toJS(this);
+        delete serverFormat.marker;
+        return serverFormat;
     }
 
     static createEmptyMilWarehouse() {

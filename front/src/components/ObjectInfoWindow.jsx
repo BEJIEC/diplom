@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { DialogContent, DialogTitle, Container, Button, List, ListItem, ListItemText,
     Divider, ButtonGroup, IconButton, DialogContentText } from '@material-ui/core';
-import { Close, Edit, Delete } from '@material-ui/icons';
+import { Close, Edit, Delete, Search } from '@material-ui/icons';
 
 import CreateChangeMapObject from './CreateChangeMapObject';
 import { Reason_Array, Urgency_Array } from '../stores/contracts/MilBase';
@@ -43,11 +43,15 @@ class ObjectInfoWindow extends React.PureComponent {
             case 'base' : return <>
 
                 <Container>
-                    <span>Причинина: {Reason_Array[object.reason]}</span>
+                    <span>Причина: {Reason_Array[object.reason]}</span>
                 </Container>
 
                 <Container>
                     <span>Терміновість: {Urgency_Array[object.urgency]}</span>
+                </Container>
+
+                <Container>
+                    <span>Бойова частина: {object.type === 'combat' ? 'Так' : 'Ні'}</span>
                 </Container>
 
                 {object.mustBeEquipment.length > 0 && <>
@@ -154,9 +158,15 @@ class ObjectInfoWindow extends React.PureComponent {
 
             <Container style={{ display:'flex', justifyContent: 'space-between' }}>
 
-                <DialogTitle>{object.name}</DialogTitle>
+                <DialogTitle>{(objectType === 'base' ? 'В/ч: ' : 'Склад: ') + object.name}</DialogTitle>
 
                 <ButtonGroup size={'small'}>
+
+                    {objectType === 'base' && <IconButton 
+                        color={'primary'}
+                        onClick={() => appStore.openWarehousesSideBar(object.id)}
+                    ><Search/></IconButton>}
+                    
                     <IconButton 
                         color={'primary'}
                         onClick={this.onEditClicked}

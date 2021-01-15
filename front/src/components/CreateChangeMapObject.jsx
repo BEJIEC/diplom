@@ -20,6 +20,7 @@ class CreateChangeMapObject extends React.PureComponent {
 
     unitName;
     unitQuantity;
+    unitID;
 
     constructor(props) {
         super();
@@ -32,8 +33,10 @@ class CreateChangeMapObject extends React.PureComponent {
         }
 
         this.creatingMode = props.creatingMode || false;
+        this.unitName = '';
+        this.unitID = props.appStore.settings.equipmentsBase[0]?.id || '';
         this.unitName = props.appStore.settings.equipmentsBase[0]?.name || '';
-        this.unitQuantity = 0;
+        this.unitQuantity = 1;
 
         makeObservable(this, {
             objectType: observable,
@@ -41,6 +44,7 @@ class CreateChangeMapObject extends React.PureComponent {
             object: observable,
             creatingMode: observable,
             unitQuantity: observable,
+            unitID: observable,
 
             onChangeObjectType: action.bound,
             onChangeReason: action.bound,
@@ -73,7 +77,8 @@ class CreateChangeMapObject extends React.PureComponent {
     }
 
     onChangeUnitName(event) {
-        this.unitName = event.target.value;
+        this.unitName = this.props.appStore.settings.equipmentsBase.find(equipment => equipment.id === event.target.value).name;
+        this.unitID = event.target.value;
     }
 
     onChangeReason(event) {
@@ -89,8 +94,8 @@ class CreateChangeMapObject extends React.PureComponent {
 
         if (Number.isNaN(newValue)) return;
 
-        if (newValue < 0) {
-            newValue = 0;
+        if (newValue < 1) {
+            newValue = 1;
         }
 
         this.unitQuantity = newValue;
@@ -101,8 +106,8 @@ class CreateChangeMapObject extends React.PureComponent {
 
         if (Number.isNaN(newQuantity)) return;
 
-        if (newQuantity < 0) {
-            this.object.availability[index].quantity = 0;
+        if (newQuantity < 1) {
+            this.object.availability[index].quantity = 1;
         } else if (newQuantity > this.object.mustBeEquipment[index].quantity) {
             this.object.availability[index].quantity = this.object.mustBeEquipment[index].quantity;
         } else {
@@ -114,14 +119,16 @@ class CreateChangeMapObject extends React.PureComponent {
         if (this.objectType === 'base') {
             let newEquip = new MilEquipment({
                 name: this.unitName,
-                quantity: this.unitQuantity
+                quantity: this.unitQuantity,
+                id: this.unitID
             });
             this.object.mustBeEquipment.push(newEquip);
             this.object.availability.push(new MilEquipment(newEquip));
         } else {
             this.object.availability.push(new MilEquipment({
                 name: this.unitName,
-                quantity: this.unitQuantity
+                quantity: this.unitQuantity,
+                id: this.unitID
             }));
         }
     }
@@ -141,7 +148,7 @@ class CreateChangeMapObject extends React.PureComponent {
         this.creatingMode = false;
         
         this.unitName = '';
-        this.unitQuantity = 0;
+        this.unitQuantity = 1;
     }
 
     cancelChanges() {
@@ -162,8 +169,6 @@ class CreateChangeMapObject extends React.PureComponent {
     }
 
     uiSwitch(objectType) {
-        console.log(this.object.reason)
-        console.log(this.object.urgency)
 
         switch(objectType) {
             case 'base' : return <>
@@ -349,10 +354,10 @@ class CreateChangeMapObject extends React.PureComponent {
                     <Container style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <Select
                             autoWidth
-                            value={this.unitName}
+                            value={this.unitID}
                             onChange={this.onChangeUnitName}
                         >
-                            {this.props.appStore.settings.equipmentsBase.map(unit => <MenuItem value={unit.name}>
+                            {this.props.appStore.settings.equipmentsBase.map(unit => <MenuItem value={unit.id}>
                                 {unit.name}
                             </MenuItem>)}
                         </Select>

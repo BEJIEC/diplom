@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 
 import MilEquipment from './MilEquipment';
 
@@ -22,6 +22,13 @@ export default class MilWarehouse {
         this.marker = marker;
 
         makeAutoObservable(this);
+    }
+
+    toServerContract() {
+        let serverFormat = toJS(this);
+        delete serverFormat.marker;
+        console.log(serverFormat)
+        return serverFormat;
     }
 
     static createEmptyMilWarehouse() {
